@@ -12,6 +12,8 @@ Utilice el archivo `data.csv` para resolver las preguntas.
 
 """
 
+import csv
+import math
 
 def pregunta_01():
     """
@@ -21,7 +23,12 @@ def pregunta_01():
     214
 
     """
-    return
+    acum = 0
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            acum += int(row[1])
+    return acum
 
 
 def pregunta_02():
@@ -39,7 +46,14 @@ def pregunta_02():
     ]
 
     """
-    return
+    reg = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            if row[0] not in reg:
+                reg[row[0]] = 0
+            reg[row[0]] += 1
+    return sorted(reg.items())
 
 
 def pregunta_03():
@@ -57,7 +71,14 @@ def pregunta_03():
     ]
 
     """
-    return
+    reg = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            if row[0] not in reg:
+                reg[row[0]] = 0
+            reg[row[0]] += int(row[1])
+    return sorted(reg.items())
 
 
 def pregunta_04():
@@ -82,7 +103,15 @@ def pregunta_04():
     ]
 
     """
-    return
+    reg = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            month = row[2].split('-')[1]
+            if month not in reg:
+                reg[month] = 0
+            reg[month] += 1
+    return sorted(reg.items())
 
 
 def pregunta_05():
@@ -100,7 +129,20 @@ def pregunta_05():
     ]
 
     """
-    return
+    maxi = {}
+    mini = {}
+    answer = []
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            if row[0] not in maxi:
+                maxi[row[0]] = -math.inf
+                mini[row[0]] = math.inf
+            maxi[row[0]] = max(maxi[row[0]], int(row[1]))
+            mini[row[0]] = min(mini[row[0]], int(row[1]))
+        for key in maxi.keys():
+            answer.append((key, maxi[key], mini[key]))
+    return sorted(answer)
 
 
 def pregunta_06():
@@ -125,7 +167,23 @@ def pregunta_06():
     ]
 
     """
-    return
+    maxi = {}
+    mini = {}
+    answer = []
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            register = row[4].split(',')
+            for item in register:
+                pair = item.split(':')
+                if pair[0] not in maxi:
+                    maxi[pair[0]] = -math.inf
+                    mini[pair[0]] = math.inf
+                maxi[pair[0]] = max(maxi[pair[0]], int(pair[1]))
+                mini[pair[0]] = min(mini[pair[0]], int(pair[1]))
+        for key in maxi.keys():
+            answer.append((key, mini[key], maxi[key]))
+    return sorted(answer)
 
 
 def pregunta_07():
@@ -149,7 +207,14 @@ def pregunta_07():
     ]
 
     """
-    return
+    reg = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            if int(row[1]) not in reg:
+                reg[int(row[1])] = []
+            reg[int(row[1])].append(row[0])
+    return sorted(reg.items())
 
 
 def pregunta_08():
@@ -174,7 +239,16 @@ def pregunta_08():
     ]
 
     """
-    return
+    reg = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            if int(row[1]) not in reg:
+                reg[int(row[1])] = set()
+            reg[int(row[1])].add(row[0])
+        for key in reg.keys():
+            reg[key] = sorted(reg[key])
+    return sorted(reg.items())
 
 
 def pregunta_09():
@@ -197,7 +271,17 @@ def pregunta_09():
     }
 
     """
-    return
+    answer = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            register = row[4].split(',')
+            for item in register:
+                pair = item.split(':')
+                if pair[0] not in answer:
+                    answer[pair[0]] = 0
+                answer[pair[0]] += 1
+    return dict(sorted(answer.items()))
 
 
 def pregunta_10():
@@ -218,7 +302,12 @@ def pregunta_10():
 
 
     """
-    return
+    answer = []
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            answer.append((row[0], len(row[3].split(',')), len(row[4].split(','))))
+    return answer
 
 
 def pregunta_11():
@@ -239,7 +328,16 @@ def pregunta_11():
 
 
     """
-    return
+    answer = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            register = row[3].split(',')
+            for item in register:
+                if item not in answer:
+                    answer[item] = 0
+                answer[item] += int(row[1])
+    return dict(sorted(answer.items()))
 
 
 def pregunta_12():
@@ -257,4 +355,13 @@ def pregunta_12():
     }
 
     """
-    return
+    answer = {}
+    with open('data.csv', newline='') as file:
+        reader = csv.reader(file, delimiter='\t')
+        for row in reader:
+            register = row[4].split(',')
+            for item in register:
+                if row[0] not in answer:
+                    answer[row[0]] = 0
+                answer[row[0]] += int(item.split(':')[1])
+    return dict(sorted(answer.items()))
